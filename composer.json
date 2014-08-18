@@ -8,6 +8,9 @@
 		"jenssegers/mongodb": "*",
 		"way/generators": "*"
 	},
+	"require-dev": {
+		"phpunit/phpunit": "4.2.*"
+	},
 	"autoload": {
 		"classmap": [
 			"app/commands",
