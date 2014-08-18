@@ -16,5 +16,4 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::resource('players', 'PlayersController');
 Route::resource('users', 'UsersController');
