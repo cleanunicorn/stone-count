@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"jenssegers/mongodb": "*"
+		"jenssegers/mongodb": "*",
+		"way/generators": "*"
 	},
 	"autoload": {
 		"classmap": [
