@@ -46,7 +46,7 @@ class UserRegisterTest extends TestCase
 			, 'application/json'								// Content
 		);
 
-		// Check the response is an array
+		// Check if the response is an array
 		$response_data = json_decode($response->getContent(), true);
 		$this->assertInternalType('array', $response_data);
 
@@ -74,7 +74,7 @@ class UserRegisterTest extends TestCase
 			, 'application/json'								// Content
 		);
 
-		// Check the response is an array
+		// Check if the response is an array
 		$response_data = json_decode($response->getContent(), true);
 		$this->assertInternalType('array', $response_data);
 
@@ -104,7 +104,7 @@ class UserRegisterTest extends TestCase
 			, 'application/json'								// Content
 		);
 
-		// Check the response is an array
+		// Check if the response is an array
 		$response_data = json_decode($response->getContent(), true);
 		$this->assertInternalType('array', $response_data);
 
@@ -126,12 +126,84 @@ class UserRegisterTest extends TestCase
 			, 'application/json'								// Content
 		);
 
-		// Check the response is an array
+		// Check if the response is an array
 		$response_data = json_decode($response->getContent(), true);
 		$this->assertInternalType('array', $response_data);
 
 		// Check if the first user was created
 		$this->assertEquals(400, $response->getStatuscode());
+	}
 
+	/**
+	 * Test user login
+	 *
+	 *
+	 * @return void
+	 */
+	public function testUserCreateAndLogin()
+	{
+		// Try to create the first user
+		$response = $this->call(
+			'POST'												// Method
+			, '/users' 										// Path
+			, array( 											// Parameters
+				'username' 		=> 'testUserLogin'
+				, 'password' 	=> 'testing'
+				, 'email' 		=> 'testUserLogin@gmail.com'
+				, 'test'		=> true
+			)
+			, array() 											// Files
+			, array()											// Server
+			, 'application/json'								// Content
+		);
+
+		// Check if the response is an array
+		$response_data = json_decode($response->getContent(), true);
+		$this->assertInternalType('array', $response_data);
+
+		// Check if the first user was created
+		$this->assertEquals(201, $response->getStatuscode());
+
+		/* Incorrect login */
+		// Try to login with an incorrect password
+		$response = $this->call(
+			'POST'
+			, '/login'
+			, array(
+				'username' => 'testUserLogin'
+				, 'password' => 'testing-incorrect'
+			)
+			, array()
+			, array()
+			, 'application/json'
+		);
+
+		// Check if the response is an array
+		$response_data = json_decode($response->getContent(), true);
+		$this->assertInternalType('array', $response_data);
+
+		// Check if the login was successful
+		$this->assertEquals(400, $response->getStatuscode());
+
+		/* Correct login */
+		// Try to login with this newly created user
+		$response = $this->call(
+			'POST'
+			, '/login'
+			, array(
+				'username' => 'testUserLogin'
+				, 'password' => 'testing'
+			)
+			, array()
+			, array()
+			, 'application/json'
+		);
+
+		// Check if the response is an array
+		$response_data = json_decode($response->getContent(), true);
+		$this->assertInternalType('array', $response_data);
+
+		// Check if the login was successful
+		$this->assertEquals(200, $response->getStatuscode());
 	}
 }

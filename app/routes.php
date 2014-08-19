@@ -17,3 +17,14 @@ Route::get('/', function()
 });
 
 Route::resource('users', 'UsersController');
+Route::resource('login', 'LoginController');
+
+Route::group(
+	array(
+		'before' => 'api.auth'
+	)
+	, function()
+	{
+
+	}
+);

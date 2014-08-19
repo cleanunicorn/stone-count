@@ -54,6 +54,22 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
+Route::filter(
+	'api.auth'
+	, function()
+	{
+		$authorization = Request::header('X-Auth-Token');
+
+		if (empty($authorization))
+		{
+			App::abort(
+				401
+				, 'X-Auth-Token header is empty or not present'
+			);
+		}
+	}
+);
+
 /*
 |--------------------------------------------------------------------------
 | Guest Filter
