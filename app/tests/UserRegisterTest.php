@@ -208,31 +208,5 @@ class UserRegisterTest extends TestCase
 
 		// Check there is an authentication token there
 		$this->assertNotEmpty($response_data[0]['auth_token']);
-
-		/* Test the auth token
-		$response = $this->call(
-			'GET'
-			, '/user'
-		);
-		*/
-		/* Logout user
-		// Try to logout this user
-		$response = $this->call(
-			'GET'
-			, '/logout'
-			, array()
-			, array()
-			, array()
-			, 'application/json'
-		);
-
-		// Check if the response is an array
-		$response_data = json_decode($response->getContent(), true);
-		$this->assertInternalType('array', $response_data);
-
-		// Check if the login was successful
-		$this->assertEquals(204, $response->getStatuscode());
-		*/
-
 	}
 }

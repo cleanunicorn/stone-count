@@ -25,6 +25,6 @@ Route::group(
 	)
 	, function()
 	{
-
+		Route::resource('decks', 'DecksController');
 	}
 );

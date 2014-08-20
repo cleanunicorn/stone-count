@@ -6,7 +6,8 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"jenssegers/mongodb": "*",
-		"way/generators": "*"
+		"way/generators": "*",
+		"guzzlehttp/guzzle": "*"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "4.2.*"
