@@ -52,10 +52,36 @@ class User extends Moloquent implements UserInterface, RemindableInterface
 	);
 
 	/**
-	 * The
+	 * Create an authentication token
 	 *
-	 *
-	 *
+	 * @return void
 	 */
+	public function auth_token_create()
+	{
+		$this->auth_token = str_random(64);
+		$this->save();
+	}
+
+	/**
+	 * Login user based on the authentication token
+	 *
+	 * @return object User instance
+	 */
+	public static function auth_token_check()
+	{
+		$user = User::where('auth_token', Request::header('X-Authorization-Token'))->first();
+
+		if ($user)
+		{
+			return $user;
+		}
+		else
+		{
+			App::abort(
+				401
+				, 'X-Authorization-Token header does not match any authentication token'
+			);
+		}
+	}
 
 }

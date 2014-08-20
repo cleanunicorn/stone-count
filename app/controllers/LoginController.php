@@ -25,17 +25,17 @@ class LoginController extends \BaseController {
 	}
 
 	/**
-	 * Login the user if possible
+	 * Login the user if possible and create a new authentication token
 	 * POST /login
 	 *
 	 * @return Response
 	 */
 	public function store()
 	{
-		//
 		if (Auth::attempt(array('username' => Input::get('username'), 'password' => Input::get('password'))))
 		{
 			$user = Auth::user();
+			$user->auth_token_create();
 
 			return Response::json(
 				array(

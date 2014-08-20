@@ -206,6 +206,9 @@ class UserRegisterTest extends TestCase
 		// Check if the login was successful
 		$this->assertEquals(200, $response->getStatuscode());
 
+		// Check there is an authentication token there
+		$this->assertNotEmpty($response_data[0]['auth_token']);
+
 		/* Test the auth token
 		$response = $this->call(
 			'GET'
