@@ -69,10 +69,11 @@ class User extends Moloquent implements UserInterface, RemindableInterface
 	 */
 	public static function auth_token_check()
 	{
-		$user = User::where('auth_token', Request::header('X-Authorization-Token'))->first();
+		$user = User::where('auth_token', '=', Request::header('X-Authorization-Token'))->get();
 
-		if ($user)
+		if (count($user))
 		{
+			$user = $user[0];
 			return $user;
 		}
 		else

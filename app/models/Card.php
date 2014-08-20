@@ -24,5 +24,6 @@ class Card extends \Moloquent {
 		, 'elite'
 		, 'howToGet'
 		, 'howToGetGold'
+		, 'uid'
 	];
 }

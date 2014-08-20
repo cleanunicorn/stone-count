@@ -35,12 +35,22 @@ class DecksController extends \BaseController {
 
 		if ($validator->fails())
 		{
-			return Redirect::back()->withErrors($validator)->withInput();
+			return Response::json(
+				array(
+					$validator->messages()
+				)
+				, 400
+			);
 		}
 
-		Deck::create($data);
+		$user = User::auth_token_check();
 
-		return Redirect::route('decks.index');
+		$deck = Deck::create($data);
+
+		return Response::json(
+			$deck->toArray()
+			, 201
+		);
 	}
 
 	/**
