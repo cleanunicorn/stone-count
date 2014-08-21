@@ -72,15 +72,17 @@ class DecksTest extends TestCase
 			, 'CS2_108'
 		);
 
+		$request_data = array(
+			'name' 			=> 'testUserCreate'
+			, 'class' 		=> 'Warrior'
+			, 'card_list' 	=> $card_list
+			, 'test'		=> true
+		);
+
 		$response = $this->call(
 			'POST'												// Method
 			, '/decks' 											// Path
-			, array( 											// Parameters
-				'name' 			=> 'testUserCreate'
-				, 'class' 		=> 'Warrior'
-				, 'card_list' 	=> $card_list
-				, 'test'		=> true
-			)
+			, $request_data
 			, array() 											// Files
 			, array(
 				'HTTP_X-Authorization-Token' => $this->auth_token
