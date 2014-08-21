@@ -1,8 +1,15 @@
 <?php
 
-class Card extends \Moloquent {
+class Card extends \Moloquent
+{
+	/**
+	 * The rules
+	 *
+	 * @var array
+	 */
 	protected $rules = [];
 
+	// Don't forget to fill this array
 	protected $fillable = [
 		'name'
 		, 'cost'
@@ -26,4 +33,14 @@ class Card extends \Moloquent {
 		, 'howToGetGold'
 		, 'uid'
 	];
+
+	/**
+	 * Define the decks relationship
+	 *
+	 * @var array
+	 */
+	public function decks()
+	{
+		return $this->hasMany('Deck');
+	}
 }

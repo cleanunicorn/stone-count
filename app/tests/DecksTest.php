@@ -65,17 +65,20 @@ class DecksTest extends TestCase
 	 */
 	public function testDeckCreate()
 	{
+		$card_list = array(
+			'DREAM_02'
+			, 'CS2_042'
+			, 'EX1_129'
+			, 'CS2_108'
+		);
+
 		$response = $this->call(
 			'POST'												// Method
 			, '/decks' 											// Path
 			, array( 											// Parameters
 				'name' 			=> 'testUserCreate'
 				, 'class' 		=> 'Warrior'
-				, 'card_list' 	=> array(
-					'CS2_042'
-					, 'EX1_129'
-					, 'CS2_108'
-				)
+				, 'card_list' 	=> $card_list
 				, 'test'		=> true
 			)
 			, array() 											// Files
@@ -89,10 +92,34 @@ class DecksTest extends TestCase
 		$response_data = json_decode($response->getContent(), true);
 		$this->assertInternalType('array', $response_data);
 
-		// Check if the user was created
+		// Check if the deck was created
 		$this->assertEquals(201, $response->getStatuscode());
 
-		print_r($response_data);
+		// Get all the users' decks and check he has the one with this card list
+		$response = $this->call(
+			'GET'
+			, '/decks'
+			, array()
+			, array()
+			, array(
+				'HTTP_X-Authorization-Token' => $this->auth_token
+			)
+			, 'application/json'
+		);
+
+		// Check if the response is an array
+		$response_data = json_decode($response->getContent(), true);
+		$this->assertInternalType('array', $response_data);
+
+		// Check if the deck was created
+		$this->assertEquals(200, $response->getStatuscode());
+
+		// Compute the cards that were added and cards that were not there
+		$cards_not_added = array_diff($card_list, $response_data[0]['card_list']);
+		$cards_added_not_there = array_diff($response_data[0]['card_list'], $card_list);
+		// Check all the cards were added and nothing more
+		$this->assertEquals(0, count($cards_not_added));
+		$this->assertEquals(0, count($cards_added_not_there));
 	}
 
 }

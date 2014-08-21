@@ -52,6 +52,16 @@ class User extends Moloquent implements UserInterface, RemindableInterface
 	);
 
 	/**
+	 * Define the user relationship
+	 *
+	 * @var object
+	 */
+	public function decks()
+	{
+		return $this->hasMany('Deck');
+	}
+
+	/**
 	 * Create an authentication token
 	 *
 	 * @return void

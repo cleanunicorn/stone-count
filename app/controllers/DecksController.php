@@ -9,7 +9,15 @@ class DecksController extends \BaseController {
 	 */
 	public function index()
 	{
-		$decks = Deck::all();
+		//$decks = Deck::all();
+
+		$user = User::auth_token_check();
+		$decks = $user->decks()->get();
+
+		return Response::json(
+			$decks->toArray()
+			, 200
+		);
 
 		return View::make('decks.index', compact('decks'));
 	}
@@ -44,8 +52,21 @@ class DecksController extends \BaseController {
 		}
 
 		$user = User::auth_token_check();
-
 		$deck = Deck::create($data);
+
+		// Save each card inserted
+		foreach($data['card_list'] as $card_id)
+		{
+			$card = Card::where('uid', $card_id)->get()->first();
+			if ($card)
+			{
+				$deck->cards()->save($card);
+			}
+		}
+		$deck->save();
+
+		// Associate this deck to the user
+		$user->decks()->save($deck);
 
 		return Response::json(
 			$deck->toArray()
