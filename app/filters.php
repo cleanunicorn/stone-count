@@ -58,13 +58,13 @@ Route::filter(
 	'api.auth'
 	, function()
 	{
-		$authorization = Request::header('X-Auth-Token');
+		$authorization = Request::header('X-Authorization-Token');
 
 		if (empty($authorization))
 		{
 			App::abort(
 				401
-				, 'X-Auth-Token header is empty or not present'
+				, 'X-Authorization-Token header is empty or not present'
 			);
 		}
 	}
