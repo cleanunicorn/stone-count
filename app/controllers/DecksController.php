@@ -9,10 +9,10 @@ class DecksController extends \BaseController {
 	 */
 	public function index()
 	{
-		//$decks = Deck::all();
-
 		$user = User::auth_token_check();
 		$decks = $user->decks()->get();
+
+		$decks = Deck::all();
 
 		return Response::json(
 			$decks->toArray()
@@ -130,9 +130,12 @@ class DecksController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		Deck::destroy($id);
+		$deleted = Deck::destroy($id);
 
-		return Redirect::route('decks.index');
+		return Response::json(
+			''
+			, 204
+		);
 	}
 
 }

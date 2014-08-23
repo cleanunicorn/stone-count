@@ -54,8 +54,8 @@ class DecksTest extends TestCase
 	{
 		parent::tearDown();
 
-		Deck::where('test', true)->delete();
-		User::where('test', true)->delete();
+		Deck::where('test', true)->forceDelete();
+		User::where('test', true)->forceDelete();
 	}
 
 	/**
@@ -122,6 +122,62 @@ class DecksTest extends TestCase
 		// Check all the cards were added and nothing more
 		$this->assertEquals(0, count($cards_not_added));
 		$this->assertEquals(0, count($cards_added_not_there));
+	}
+
+	/**
+	 * Test deck deletion
+	 *
+	 * @return void
+	 */
+	public function testDeckDelete()
+	{
+		$card_list = array(
+			'DREAM_02'
+			, 'CS2_042'
+			, 'EX1_129'
+			, 'CS2_108'
+		);
+
+		$request_data = array(
+			'name' 			=> 'testUserCreate'
+			, 'class' 		=> 'Warrior'
+			, 'card_list' 	=> $card_list
+			, 'test'		=> true
+		);
+
+		// Create a deck to delete
+		$response = $this->call(
+			'POST'												// Method
+			, '/decks' 											// Path
+			, $request_data
+			, array() 											// Files
+			, array(
+				'HTTP_X-Authorization-Token' => $this->auth_token
+			)											// Server
+			, 'application/json'								// Content
+		);
+
+		// Check if the response is an array
+		$response_data = json_decode($response->getContent(), true);
+		$this->assertInternalType('array', $response_data);
+
+		// Check if the deck was created
+		$this->assertEquals(201, $response->getStatuscode());
+
+		// Delete the deck that was just created
+		$response = $this->call(
+			'DELETE'
+			, '/decks/'. $response_data['_id']
+			, array()
+			, array()
+			, array(
+				'HTTP_X-Authorization-Token' => $this->auth_token
+			)
+			, 'application/json'
+		);
+
+		// Check if the deck was created
+		$this->assertEquals(204, $response->getStatuscode());
 	}
 
 }

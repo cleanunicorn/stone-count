@@ -22,7 +22,7 @@ class UserRegisterTest extends TestCase
 	{
 		parent::tearDown();
 
-		User::where('test', true)->delete();
+		User::where('test', true)->forceDelete();
 	}
 
 	/**

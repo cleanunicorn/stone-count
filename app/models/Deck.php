@@ -15,17 +15,38 @@ class Deck extends \Moloquent
 	static $rules = array(
 		'name' => 'required'
 		, 'class' => 'in:Warrior,Paladin,Mage,Rogue,Shaman,Druid,Warlock,Hunter,Priest'
+		, 'tags' => 'array'
+		, 'url' => 'url'
 	);
 
-	// Don't forget to fill this array
+	/**
+	 * Fillable fields
+	 *
+	 * @var array
+	 */
 	protected $fillable = [
 		'name'
 		, 'class'
+		, 'note'
+		, 'tags'
+		, 'url'
 		, 'test'
 	];
 
 	/**
+	 * Soft deletion of decks
+	 *
+	 * @var boolean
+	 */
+	use SoftDeletingTrait;
+	protected $softDelete = true;
+
+	protected $dates = ['deleted_at'];
+
+	/**
 	 * Hide some of the attributes
+	 *
+	 * @var array
 	 */
 	protected $hidden = array('card_ids');
 
