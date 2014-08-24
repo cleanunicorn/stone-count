@@ -9,9 +9,11 @@ class GameSessionsController extends \BaseController {
 	 */
 	public function index()
 	{
-		$GameSessions = GameSession::all();
+		$GameSessions = GameSession::with('turns', 'turns.turnActions', 'turns.turnActions.card')->get();
 
-		return View::make('GameSessions.index', compact('GameSessions'));
+		return Response::json(
+			$GameSessions->toArray()
+		);
 	}
 
 	/**
@@ -47,7 +49,27 @@ class GameSessionsController extends \BaseController {
 		$gamesession = GameSession::create($data);
 
 		// Save each turn
-		// ...
+		foreach($data['turns'] as $turn_data)
+		{
+			$turn = new Turn;
+			$gamesession->turns()->save($turn);
+
+			foreach($turn_data['turn_actions'] as $turn_action_data)
+			{
+				$card = Card::where('uid', $turn_action_data['card'])->get()->first();
+
+				$turn_action = new TurnAction;
+				$turn_action->action = $turn_action_data['action'];
+				$turn_action->card()->associate($card);
+				$turn_action->save();
+
+				$turn->turnactions()->save($turn_action);
+			}
+
+			$turn->save();
+		}
+
+		$gamesession->load('turns', 'turns.turnActions', 'turns.turnActions.card');
 
 		return Response::json(
 			$gamesession->toArray()

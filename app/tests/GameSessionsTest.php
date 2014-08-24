@@ -54,9 +54,9 @@ class GameSessionsTest extends TestCase
 	{
 		parent::tearDown();
 
-		//Deck::where('test', true)->delete();
-		//User::where('test', true)->delete();
-		//GameSession::where('test', true)->delete();
+		Deck::where('test', true)->delete();
+		User::where('test', true)->delete();
+		GameSession::where('test', true)->delete();
 	}
 
 	/**
@@ -78,6 +78,44 @@ class GameSessionsTest extends TestCase
 			, 'start_at' => $start_at
 			, 'end_at' => $end_at
 			, 'note' => ''
+			, 'turns' => array(
+				array(
+					'turn_actions' => array(
+						array(
+							'card' => 'EX1_007'
+							, 'action' => 'PlayerDraw'
+						)
+						, array(
+							'card' => 'FP1_002'
+							, 'action' => 'PlayerDraw'
+						)
+						, array(
+							'card' => 'CS2_147'
+							, 'action' => 'PlayerDraw'
+						)
+					)
+				)
+				, array(
+					'turn_actions' => array(
+						array(
+							'card' => 'GAME_005'
+							, 'action' => 'PlayerDraw'
+						)
+						, array(
+							'card' => 'CS2_013'
+							, 'action' => 'OpponentPlay'
+						)
+						, array(
+							'card' => 'CS2_147'
+							, 'action' => 'OpponentPlay'
+						)
+						, array(
+							'card' => ''
+							, 'action' => 'OpponentDraw'
+						)
+					)
+				)
+			)
 
 			, 'test' => true
 		);
@@ -105,36 +143,24 @@ class GameSessionsTest extends TestCase
 		$this->assertEquals($request_data['coin'], $response_data['coin']);
 		$this->assertEquals($request_data['mode'], $response_data['mode']);
 		$this->assertEquals($request_data['result'], $response_data['result']);
-		$this->assertEquals($request_data['turns'], $response_data['turns']);
 		$this->assertEquals($request_data['note'], $response_data['note']);
 
-		/*
-		// Get all the users' decks and check he has the one with this card list
-		$response = $this->call(
-			'GET'
-			, '/decks'
-			, array()
-			, array()
-			, array(
-				'HTTP_X-Authorization-Token' => $this->auth_token
-			)
-			, 'application/json'
-		);
+		// Testing turns one by one
+		foreach($response_data['turns'] as $turn_key => $turn)
+		{
+			foreach($turn['turn_actions'] as $turn_action_key => $turn_action)
+			{
+				$this->assertEquals(
+					$request_data['turns'][$turn_key]['turn_actions'][$turn_action_key]['card']
+					, $turn_action['card']['uid']
+				);
 
-		// Check if the response is an array
-		$response_data = json_decode($response->getContent(), true);
-		$this->assertInternalType('array', $response_data);
-
-		// Check if the deck was created
-		$this->assertEquals(200, $response->getStatuscode());
-
-		// Compute the cards that were added and cards that were not there
-		$cards_not_added = array_diff($card_list, $response_data[0]['card_list']);
-		$cards_added_not_there = array_diff($response_data[0]['card_list'], $card_list);
-		// Check all the cards were added and nothing more
-		$this->assertEquals(0, count($cards_not_added));
-		$this->assertEquals(0, count($cards_added_not_there));
-		*/
+				$this->assertEquals(
+					$request_data['turns'][$turn_key]['turn_actions'][$turn_action_key]['action']
+					, $turn_action['action']
+				);
+			}
+		}
 	}
 
 }

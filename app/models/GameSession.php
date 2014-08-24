@@ -8,7 +8,6 @@ class GameSession extends \Moloquent {
 		, 'coin' => 'required|boolean'
 		, 'mode' => 'required|in:Ranked,Casual,Arena,Friendly,Practice,None'
 		, 'result' => 'required|in:None,Win,Loss'
-		, 'turns' => 'required|integer'
 		, 'start_at' => 'required|date'
 		, 'end_at' => 'required|date'
 		, 'note' => ''
@@ -20,7 +19,6 @@ class GameSession extends \Moloquent {
 		, 'coin'
 		, 'mode'
 		, 'result'
-		, 'turns'
 		, 'start_at'
 		, 'end_at'
 		, 'note'
@@ -56,5 +54,20 @@ class GameSession extends \Moloquent {
 	public function deck()
 	{
 		return $this->belongsTo('Deck');
+	}
+
+	/**
+	 * Define events
+	 *
+	 * @var void
+	 */
+	public static function boot()
+	{
+		parent::boot();
+
+		GameSession::deleted(function($gamesession)
+		{
+			$gamesession->turns()->delete();
+		});
 	}
 }

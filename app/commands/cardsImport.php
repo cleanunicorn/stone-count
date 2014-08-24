@@ -60,6 +60,20 @@ class cardsImport extends Command {
 			}
 		}
 
+		// Add blank card
+		Card::create(
+			array(
+				"uid" => ""
+				, "name" => "Unknown card"
+				, "type" => ""
+				, "faction" => ""
+				, "rarity" => ""
+				, "cost" => 0
+				, "text" => ""
+				, "flavor" => ""
+			)
+		);
+
 		$this->info("Imported cards {$cards_imported}");
 	}
 
