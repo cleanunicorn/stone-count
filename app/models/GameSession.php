@@ -70,4 +70,14 @@ class GameSession extends \Moloquent {
 			$gamesession->turns()->delete();
 		});
 	}
+
+	/**
+	 * Define user relationship
+	 *
+	 * @var object
+	 */
+	public function user()
+	{
+		return $this->belongsTo('User');
+	}
 }

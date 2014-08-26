@@ -47,6 +47,7 @@ class GameSessionsController extends \BaseController {
 
 		$user = User::auth_token_check();
 		$gamesession = GameSession::create($data);
+		$user->gamesessions()->save($gamesession);
 
 		// Save each turn
 		foreach($data['turns'] as $turn_data)
