@@ -46,8 +46,17 @@ class GameSessionsController extends \BaseController {
 		}
 
 		$user = User::auth_token_check();
+
+		// Create and save the gamesession for the logged in user
 		$gamesession = GameSession::create($data);
 		$user->gamesessions()->save($gamesession);
+
+		// If there is a deck specified save it
+		$deck = Deck::find($data['deck_id']);
+		if ($deck)
+		{
+			$deck->gamesessions()->save($gamesession);
+		}
 
 		// Save each turn
 		foreach($data['turns'] as $turn_data)
