@@ -38,8 +38,7 @@ class Deck extends \Moloquent
 	 *
 	 * @var boolean
 	 */
-	use SoftDeletingTrait;
-	protected $softDelete = true;
+	use Jenssegers\Mongodb\Eloquent\SoftDeletingTrait;
 
 	protected $dates = ['deleted_at'];
 
