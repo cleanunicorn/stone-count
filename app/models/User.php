@@ -62,6 +62,16 @@ class User extends Moloquent implements UserInterface, RemindableInterface
 	}
 
 	/**
+	 * Define gamesessions relationship
+	 *
+	 * @var object
+	 */
+	public function gamesessions()
+	{
+		return $this->hasMany('GameSession');
+	}
+
+	/**
 	 * Create an authentication token
 	 *
 	 * @return void

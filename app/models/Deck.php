@@ -70,6 +70,16 @@ class Deck extends \Moloquent
 	}
 
 	/**
+	 * Define the game-sessions relationship
+	 *
+	 * @var object
+	 */
+	public function gameSessions()
+	{
+		return $this->hasMany('GameSession');
+	}
+
+	/**
 	 * Define a custom attribute that returns the Hearthstone ids based on the cards the user has
 	 *
 	 * @var array

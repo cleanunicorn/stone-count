@@ -26,5 +26,6 @@ Route::group(
 	, function()
 	{
 		Route::resource('decks', 'DecksController');
+		Route::resource('game-sessions', 'GameSessionsController');
 	}
 );
