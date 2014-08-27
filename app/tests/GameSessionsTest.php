@@ -74,8 +74,8 @@ class GameSessionsTest extends TestCase
 			, 'coin' => true
 			, 'mode' => 'Ranked'
 			, 'result' => 'Win'
-			, 'start_at' => $start_at
-			, 'end_at' => $end_at
+			, 'start_at' => $start_at->format('c')
+			, 'end_at' => $end_at->format('c')
 			, 'note' => ''
 			, 'deck_id' => ''
 			, 'turns' => array(
@@ -215,8 +215,8 @@ class GameSessionsTest extends TestCase
 			, 'coin' => true
 			, 'mode' => 'Ranked'
 			, 'result' => 'Loss'
-			, 'start_at' => $start_at
-			, 'end_at' => $end_at
+			, 'start_at' => $start_at->format('c')
+			, 'end_at' => $end_at->format('c')
 			, 'note' => ''
 			, 'deck_id' => $response_data['_id']
 			, 'turns' => array(

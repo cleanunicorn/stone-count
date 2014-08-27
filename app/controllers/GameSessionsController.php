@@ -45,7 +45,14 @@ class GameSessionsController extends \BaseController {
 			);
 		}
 
+		// Identify the user
 		$user = User::auth_token_check();
+
+		//dd($data);
+
+		// Transform dates
+		$data['start_at'] = new DateTime($data['start_at']);
+		$data['end_at'] = new DateTime($data['end_at']);
 
 		// Create and save the gamesession for the logged in user
 		$gamesession = GameSession::create($data);
