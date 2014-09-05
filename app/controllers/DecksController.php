@@ -60,6 +60,7 @@ class DecksController extends \BaseController {
 			$card = Card::where('uid', $card_id)->get()->first();
 			if ($card)
 			{
+				echo "Saving {$card_id}\n";
 				$deck->cards()->save($card);
 			}
 		}

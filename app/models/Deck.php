@@ -94,6 +94,8 @@ class Deck extends \Moloquent
 			$card_list[] = $card->uid;
 		}
 
+		//sort($card_list);
+
 		return $card_list;
 	}
 }

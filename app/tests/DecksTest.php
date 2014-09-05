@@ -179,5 +179,4 @@ class DecksTest extends TestCase
 		// Check if the deck was created
 		$this->assertEquals(204, $response->getStatuscode());
 	}
-
 }
